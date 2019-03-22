@@ -4,14 +4,14 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import debounce from 'lodash.debounce';
 import { styles } from '../style/style';
-
+const debounceTimer=200; //TODO: move to config
 
 class SearchInput extends Component {
 
   handleSearch = debounce(query => {
     const { handleSearch } = this.props;
     handleSearch(query);
-  }, 200);
+  }, debounceTimer);
 
   handleInputChange = e => {
     let input = e.target.value.toLowerCase();

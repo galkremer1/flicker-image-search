@@ -21,5 +21,17 @@ export const styles = {
     searchContainer: {
       padding: 10,
       backgroundColor: 'gray'
+    },
+    appContainer: {
+      textAlign: 'center'
+    },
+    appHeader: {
+      backgroundColor: '#282c34',
+      minHeight: 45,
+      fontDize: 'calc(10px + 2vmin)',
+      color: 'white',
+      position: 'fixed',
+      width: '100%',
+      zIndex: 2
     }
   };
