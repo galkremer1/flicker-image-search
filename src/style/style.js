@@ -32,7 +32,7 @@ export const styles = {
       color: 'white',
       position: 'fixed',
       width: '100%',
-      zIndex: 2
+      zIndex: 3
     },
     error: {
       position: 'relative',

@@ -4,8 +4,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import debounce from 'lodash.debounce';
 import { styles } from '../style/style';
-const debounceTimer=200; //TODO: move to config
-
+const debounceTimer=400;
 class SearchInput extends Component {
 
   handleSearch = debounce(query => {

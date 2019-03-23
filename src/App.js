@@ -18,24 +18,29 @@ class App extends Component {
       currentPage: 1,
       searchTerm: 'animals',
       noMorePhotosToFetch: false,
+      searchHistory: []
     };
     this.photosPerPage = 100;
   }
 
   componentDidMount() {
     const {searchTerm, currentPage} = this.state;
-    this.getData(searchTerm, currentPage);
+    localStorage.imageSearchHistory = localStorage.imageSearchHistory || JSON.stringify([]);
+    this.setState({
+      searchHistory: JSON.parse(localStorage.imageSearchHistory)
+    }, this.getData(searchTerm, currentPage))
   }
 
-  toggleLoaderAndSetSearchTerm = (loading,searchTerm, currentPage) => {
+  toggleLoaderSearchTermPage = (loading,searchTerm, currentPage) => {
     this.setState({
       loading,
       searchTerm,
       currentPage
-    })
+    });
   }
+
   getData(searchTerm, currentPage=1) {
-    this.toggleLoaderAndSetSearchTerm(true, searchTerm, currentPage);
+    this.toggleLoaderSearchTermPage(true, searchTerm, currentPage);
     getData(searchTerm, currentPage).then((data)=>{
       if (data && data.photos && data.photos.photo) {
         const photosArray = parseImageData(data.photos.photo);
@@ -43,28 +48,35 @@ class App extends Component {
         if (photosArray.length < this.photosPerPage) {
           noMorePhotosToFetch = true;
         }
-        if (currentPage > 1) {
-          const {photos} = this.state;
-          this.setState({photos: photos.concat(photosArray), loading: false, error: false, noMorePhotosToFetch});
-        } else {
-          this.setState({photos: photosArray, loading: false, error: false, noMorePhotosToFetch});
-        }
+        this.setState({photos: (currentPage > 1 ? this.state.photos.concat(photosArray) : photosArray), 
+        loading: false, error: false, noMorePhotosToFetch});
       }
     }).catch((error)=>{
       this.setState({error: true, loading: false});
     })
   }
 
+  updateSearchHistory = (searchTerm) => {
+    const { searchHistory } = this.state;
+    if (!searchHistory.includes(searchTerm)) {
+      searchHistory.push(searchTerm);
+      localStorage.imageSearchHistory = JSON.stringify(searchHistory);
+      this.setState({
+        searchHistory
+      });
+    }
+  }
+
   handleSearch = (searchTerm) => {
+   if (searchTerm !== '') {
     this.getData(searchTerm);
+    this.updateSearchHistory(searchTerm);
+   }
   }
 
   loadMore = () =>{
     const { loading, error, currentPage, searchTerm, noMorePhotosToFetch} = this.state;
     if (!loading && !error && !noMorePhotosToFetch) {
-      // this.setState({
-      //   currentPage: currentPage + 1
-      // }, this.getData(searchTerm, currentPage + 1));
       this.getData(searchTerm, currentPage + 1);
     }
   }
