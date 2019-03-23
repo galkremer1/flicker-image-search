@@ -4,8 +4,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import SearchMenu from './searchMenu';
 import debounce from 'lodash.debounce';
 import { styles } from '../style/style';
 const debounceTimer=400;
@@ -46,13 +46,11 @@ class SearchInput extends Component {
   }
 
   render() {
-    const { classes, inputPlaceHolder, autoSearch } = this.props;
+    const { classes, inputPlaceHolder, autoSearch, showSearchHistory} = this.props;
     return (
         <div className={classes.searchContainer}>
           <Paper className={classes.root} elevation={1}>
-            <IconButton className={classes.iconButton} aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
+          <SearchMenu showSearchHistory={showSearchHistory}/>
             <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
             {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
               <SearchIcon />

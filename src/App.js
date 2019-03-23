@@ -91,6 +91,10 @@ class App extends Component {
     localStorage.autoSearch = JSON.stringify(autoSearch);
   }
 
+  showSearchHistory = () => {
+    console.log('showSearchHistory')
+  }
+
   render() {
     const { classes, appHeader} = this.props;
     const { searchInputPlaceHolder, photos, loading, error, autoSearch} = this.state;
@@ -98,7 +102,9 @@ class App extends Component {
       <div className={classes.appContainer} >
         <header className={classes.appHeader}>
            {appHeader}
-           <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
+           <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} 
+                        showSearchHistory={this.showSearchHistory}
+                        autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
         </header>
         <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />
         { loading &&  
