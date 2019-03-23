@@ -49,12 +49,12 @@ class SearchInput extends Component {
     const { classes, inputPlaceHolder, autoSearch, showSearchHistory} = this.props;
     return (
         <div className={classes.searchContainer}>
-          <Paper className={classes.root} elevation={1}>
-          <SearchMenu showSearchHistory={showSearchHistory}/>
-            <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
-            {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
-              <SearchIcon />
-            </IconButton>}
+          <Paper className={classes.searchContainerPaper} elevation={1}>
+            <SearchMenu showSearchHistory={showSearchHistory}/>
+              <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
+              {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
+                <SearchIcon />
+              </IconButton>}
           </Paper>
           <div>
             <Checkbox

@@ -4,7 +4,10 @@ export const styles = {
         flexWrap: 'wrap',
         justifyContent: 'center',
         position: 'relative',
-        top: 100
+        top: 100,
+        '@media (max-width:780px)' : {
+            top: 140
+          }
     },
     photo: {
         maxWidth: '30%',

@@ -1,9 +1,14 @@
 export const styles = {
-    root: {
+    searchContainerPaper : {
       padding: '2px 4px',
       display: 'flex',
       alignItems: 'center',
       flexBasis: '30%',
+    },
+    menuPaper : {
+      padding: '2px 4px',
+      display: 'flex',
+      flexBasis: '10%',
     },
     input: {
       marginLeft: 8,
@@ -24,7 +29,10 @@ export const styles = {
       padding: 10,
       backgroundColor: 'gray',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      '@media (max-width:780px)' : {
+        flexDirection: 'column'
+      }
     },
     appContainer: {
       textAlign: 'center'

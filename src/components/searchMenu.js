@@ -38,7 +38,7 @@ class searchMenu extends React.Component {
     const { open } = this.state;
 
     return (
-      <div className={classes.root}>
+      <div className={classes.menuPaper}>
         <div>
           <IconButton buttonRef={node => {
               this.anchorEl = node;
