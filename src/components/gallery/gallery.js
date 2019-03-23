@@ -37,7 +37,6 @@ closeGallery = () =>{
 }
 
 openGallery = (photo,index) => {
-  console.log(photo, index);
   this.setState({
     isGalleryOpen: true,
     galleryPhotoIndex: index

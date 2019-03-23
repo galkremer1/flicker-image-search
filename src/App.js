@@ -18,7 +18,8 @@ class App extends Component {
       currentPage: 1,
       searchTerm: 'animals',
       noMorePhotosToFetch: false,
-      searchHistory: []
+      searchHistory: [],
+      autoSearch: true
     };
     this.photosPerPage = 100;
   }
@@ -26,8 +27,10 @@ class App extends Component {
   componentDidMount() {
     const {searchTerm, currentPage} = this.state;
     localStorage.imageSearchHistory = localStorage.imageSearchHistory || JSON.stringify([]);
+    localStorage.autoSearch = localStorage.autoSearch || JSON.stringify(true);
     this.setState({
-      searchHistory: JSON.parse(localStorage.imageSearchHistory)
+      searchHistory: JSON.parse(localStorage.imageSearchHistory),
+      autoSearch: JSON.parse(localStorage.autoSearch),
     }, this.getData(searchTerm, currentPage))
   }
 
@@ -74,21 +77,28 @@ class App extends Component {
    }
   }
 
-  loadMore = () =>{
+  loadMore = () => {
     const { loading, error, currentPage, searchTerm, noMorePhotosToFetch} = this.state;
     if (!loading && !error && !noMorePhotosToFetch) {
       this.getData(searchTerm, currentPage + 1);
     }
   }
 
+  handleAutoSearchToggle = (autoSearch) => {
+    this.setState({
+      autoSearch
+    });
+    localStorage.autoSearch = JSON.stringify(autoSearch);
+  }
+
   render() {
     const { classes, appHeader} = this.props;
-    const { searchInputPlaceHolder, photos, loading, error} = this.state;
+    const { searchInputPlaceHolder, photos, loading, error, autoSearch} = this.state;
     return (
       <div className={classes.appContainer} >
         <header className={classes.appHeader}>
            {appHeader}
-           <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} />
+           <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
         </header>
         <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />
         { loading &&  

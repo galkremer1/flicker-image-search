@@ -3,15 +3,16 @@ export const styles = {
       padding: '2px 4px',
       display: 'flex',
       alignItems: 'center',
-      width: 400,
-      margin: 'auto'
+      flexBasis: '30%',
     },
     input: {
       marginLeft: 8,
       flex: 1,
+      order: 1
     },
     iconButton: {
       padding: 10,
+      order: 1
     },
     divider: {
       width: 1,
@@ -19,8 +20,11 @@ export const styles = {
       margin: 4,
     },
     searchContainer: {
+      display: 'flex',
       padding: 10,
-      backgroundColor: 'gray'
+      backgroundColor: 'gray',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     appContainer: {
       textAlign: 'center'
