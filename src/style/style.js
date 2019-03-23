@@ -33,5 +33,11 @@ export const styles = {
       position: 'fixed',
       width: '100%',
       zIndex: 2
+    },
+    error: {
+      position: 'relative',
+      top: 125,
+      color: 'red',
+      fontSize: 40
     }
   };

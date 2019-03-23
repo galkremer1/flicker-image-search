@@ -13,26 +13,45 @@ class App extends Component {
     this.state = {
       searchInputPlaceHolder: 'Search Flicker...',
       photos: [],
-      loading: true
-    }
+      loading: true,
+      error: false,
+      currentPage: 1,
+      searchTerm: 'animals',
+      noMorePhotosToFetch: false,
+    };
+    this.photosPerPage = 100;
   }
 
   componentDidMount() {
-    this.getData('animals');
+    const {searchTerm, currentPage} = this.state;
+    this.getData(searchTerm, currentPage);
   }
 
-  toggleLoader = (toggle) => {
+  toggleLoaderAndSetSearchTerm = (loading,searchTerm, currentPage) => {
     this.setState({
-      loading: toggle
+      loading,
+      searchTerm,
+      currentPage
     })
   }
-  getData(searchTerm) {
-    this.toggleLoader(true);
-    getData(searchTerm).then((data)=>{
+  getData(searchTerm, currentPage=1) {
+    this.toggleLoaderAndSetSearchTerm(true, searchTerm, currentPage);
+    getData(searchTerm, currentPage).then((data)=>{
       if (data && data.photos && data.photos.photo) {
-        console.log(data.photos.photo);
-        this.setState({photos: parseImageData(data.photos.photo), loading: false});
+        const photosArray = parseImageData(data.photos.photo);
+        let noMorePhotosToFetch = false;
+        if (photosArray.length < this.photosPerPage) {
+          noMorePhotosToFetch = true;
+        }
+        if (currentPage > 1) {
+          const {photos} = this.state;
+          this.setState({photos: photos.concat(photosArray), loading: false, error: false, noMorePhotosToFetch});
+        } else {
+          this.setState({photos: photosArray, loading: false, error: false, noMorePhotosToFetch});
+        }
       }
+    }).catch((error)=>{
+      this.setState({error: true, loading: false});
     })
   }
 
@@ -40,19 +59,31 @@ class App extends Component {
     this.getData(searchTerm);
   }
 
+  loadMore = () =>{
+    const { loading, error, currentPage, searchTerm, noMorePhotosToFetch} = this.state;
+    if (!loading && !error && !noMorePhotosToFetch) {
+      // this.setState({
+      //   currentPage: currentPage + 1
+      // }, this.getData(searchTerm, currentPage + 1));
+      this.getData(searchTerm, currentPage + 1);
+    }
+  }
+
   render() {
     const { classes, appHeader} = this.props;
-    const { searchInputPlaceHolder, photos, loading} = this.state;
+    const { searchInputPlaceHolder, photos, loading, error} = this.state;
     return (
-      <div className={classes.appContainer}>
+      <div className={classes.appContainer} >
         <header className={classes.appHeader}>
            {appHeader}
            <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} />
-
         </header>
-        <Gallery photos={photos} isLoading={loading} />
+        <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />
         { loading &&  
          (<div className="loading">Loading&#8230;</div>)
+        }
+        { error &&  
+         (<div className={classes.error}>Error fetching images</div>)
         }
       </div>
       
