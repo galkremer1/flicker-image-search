@@ -19,6 +19,7 @@ export const styles = {
         transition: 'all 1s',
         cursor: 'pointer',
         zIndex: 1,
+        objectFit: 'cover',
         '&:hover':{
             transform: 'scale(1.2)',
             zIndex: 2
