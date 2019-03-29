@@ -12,15 +12,15 @@ class Gallery extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
   }
 
-componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-}
+  }
 
-handleScroll = (event) => {
+  handleScroll = (event) => {
     const { loadMore } = this.props;
     const galleryScrollHeight = event.srcElement.body.scrollHeight;
     const pageScrollPosition = window.pageYOffset;
@@ -28,35 +28,36 @@ handleScroll = (event) => {
       loadMore();
     }
 
-}
+  }
 
-closeGallery = () =>{
-  this.setState({
-    isGalleryOpen: false,
-  })
-}
+  closeGallery = () => {
+    this.setState({
+      isGalleryOpen: false,
+    })
+  }
 
-openGallery = (photo,index) => {
-  this.setState({
-    isGalleryOpen: true,
-    galleryPhotoIndex: index
-  })
-}
+  openGallery = (photo, index) => {
+    this.setState({
+      isGalleryOpen: true,
+      galleryPhotoIndex: index
+    })
+  }
 
-render() {
-  const { classes, photos, isLoading, error} = this.props;
-  const { isGalleryOpen, galleryPhotoIndex } = this.state;
-  return (
-    <div className={classes.galleryContainer}>
-      {photos.map((photo, i)=>{
-        return  <img className={classes.photo} key={photo.id} onClick={()=>{this.openGallery(photo, i)}}
-                      alt={photo.title} src={photo.thumbnailUrl}/ >
-      })}
-      {!isLoading && !error && photos.length === 0 && <div>
-        No results
+  render() {
+    const { classes, photos, isLoading, error } = this.props;
+    const { isGalleryOpen, galleryPhotoIndex } = this.state;
+    const noResults = !isLoading && !error && photos.length === 0;
+    return (
+      <div className={`${classes.galleryContainer} ${(noResults ? classes.noSearchResults : '')}`}>
+        {photos.map((photo, i) => {
+          return <img className={classes.photo} key={photo.id} onClick={() => { this.openGallery(photo, i) }}
+            alt={photo.title} src={photo.thumbnailUrl} />
+        })}
+        {noResults && <div>
+          No results
       </div>}
-      <LightboxGallery images={photos} isGalleryOpen={isGalleryOpen} galleryPhotoIndex={galleryPhotoIndex} closeGallery={this.closeGallery}/>
-    </div>
+        <LightboxGallery images={photos} isGalleryOpen={isGalleryOpen} galleryPhotoIndex={galleryPhotoIndex} closeGallery={this.closeGallery} />
+      </div>
     );
   }
 }

@@ -2,8 +2,9 @@ export const styles = {
     galleryContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center',
         position: 'relative',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         top: 100,
         '@media (max-width:780px)' : {
             top: 140
@@ -24,6 +25,8 @@ export const styles = {
             transform: 'scale(1.2)',
             zIndex: 2
         }
-        
     },
+    noSearchResults: {
+        justifyContent: 'center',
+    }
   };

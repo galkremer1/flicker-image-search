@@ -4,6 +4,7 @@ import { getData, parseImageData } from "./utils/utils";
 import { styles } from './style/style';
 import SearchInput from './components/searchInput';
 import Gallery from './components/gallery/gallery';
+import SearchHistory from './components/searchHistory';
 import './style/loading.css';
 
 class App extends Component {
@@ -19,13 +20,14 @@ class App extends Component {
       searchTerm: 'animals',
       noMorePhotosToFetch: false,
       searchHistory: [],
-      autoSearch: true
+      autoSearch: true,
+      showSearchHistory: false
     };
     this.photosPerPage = 100;
   }
 
   componentDidMount() {
-    const {searchTerm, currentPage} = this.state;
+    const { searchTerm, currentPage } = this.state;
     localStorage.imageSearchHistory = localStorage.imageSearchHistory || JSON.stringify([]);
     localStorage.autoSearch = localStorage.autoSearch || JSON.stringify(true);
     this.setState({
@@ -34,7 +36,7 @@ class App extends Component {
     }, this.getData(searchTerm, currentPage))
   }
 
-  toggleLoaderSearchTermPage = (loading,searchTerm, currentPage) => {
+  toggleLoaderSearchTermPage = (loading, searchTerm, currentPage) => {
     this.setState({
       loading,
       searchTerm,
@@ -42,20 +44,22 @@ class App extends Component {
     });
   }
 
-  getData(searchTerm, currentPage=1) {
+  getData(searchTerm, currentPage = 1) {
     this.toggleLoaderSearchTermPage(true, searchTerm, currentPage);
-    getData(searchTerm, currentPage).then((data)=>{
+    getData(searchTerm, currentPage).then((data) => {
       if (data && data.photos && data.photos.photo) {
         const photosArray = parseImageData(data.photos.photo);
         let noMorePhotosToFetch = false;
         if (photosArray.length < this.photosPerPage) {
           noMorePhotosToFetch = true;
         }
-        this.setState({photos: (currentPage > 1 ? this.state.photos.concat(photosArray) : photosArray), 
-        loading: false, error: false, noMorePhotosToFetch});
+        this.setState({
+          photos: (currentPage > 1 ? this.state.photos.concat(photosArray) : photosArray),
+          loading: false, error: false, noMorePhotosToFetch
+        });
       }
-    }).catch((error)=>{
-      this.setState({error: true, loading: false});
+    }).catch((error) => {
+      this.setState({ error: true, loading: false });
     })
   }
 
@@ -71,14 +75,18 @@ class App extends Component {
   }
 
   handleSearch = (searchTerm) => {
-   if (searchTerm !== '') {
-    this.getData(searchTerm);
-    this.updateSearchHistory(searchTerm);
-   }
+    const { showSearchHistory } = this.state;
+    if (showSearchHistory) {
+      this.toggleSearchHistory();
+    }
+    if (searchTerm !== '') {
+      this.getData(searchTerm);
+      this.updateSearchHistory(searchTerm);
+    }
   }
 
   loadMore = () => {
-    const { loading, error, currentPage, searchTerm, noMorePhotosToFetch} = this.state;
+    const { loading, error, currentPage, searchTerm, noMorePhotosToFetch } = this.state;
     if (!loading && !error && !noMorePhotosToFetch) {
       this.getData(searchTerm, currentPage + 1);
     }
@@ -91,30 +99,34 @@ class App extends Component {
     localStorage.autoSearch = JSON.stringify(autoSearch);
   }
 
-  showSearchHistory = () => {
-    console.log('showSearchHistory')
+  toggleSearchHistory = () => {
+    const { showSearchHistory } = this.state;
+    this.setState({
+      showSearchHistory: !showSearchHistory
+    })
   }
 
   render() {
-    const { classes, appHeader} = this.props;
-    const { searchInputPlaceHolder, photos, loading, error, autoSearch} = this.state;
+    const { classes, appHeader } = this.props;
+    const { searchInputPlaceHolder, photos, loading, error, autoSearch, showSearchHistory } = this.state;
     return (
       <div className={classes.appContainer} >
         <header className={classes.appHeader}>
-           {appHeader}
-           <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder} 
-                        showSearchHistory={this.showSearchHistory}
-                        autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
+          {appHeader}
+          <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder}
+            toggleSearchHistory={this.toggleSearchHistory} showSearchHistory={showSearchHistory}
+            autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
         </header>
-        <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />
-        { loading &&  
-         (<div className="loading">Loading&#8230;</div>)
+        {!showSearchHistory && <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />}
+        {showSearchHistory && <SearchHistory />}
+        {loading &&
+          (<div className="loading">Loading&#8230;</div>)
         }
-        { error &&  
-         (<div className={classes.error}>Error fetching images</div>)
+        {error &&
+          (<div className={classes.error}>Error fetching images</div>)
         }
       </div>
-      
+
     );
   }
 }

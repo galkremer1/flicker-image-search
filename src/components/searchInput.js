@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SearchMenu from './searchMenu';
 import debounce from 'lodash.debounce';
 import { styles } from '../style/style';
-const debounceTimer=400;
+const debounceTimer = 400;
 
 class SearchInput extends Component {
 
@@ -46,25 +46,25 @@ class SearchInput extends Component {
   }
 
   render() {
-    const { classes, inputPlaceHolder, autoSearch, showSearchHistory} = this.props;
+    const { classes, inputPlaceHolder, autoSearch, toggleSearchHistory, showSearchHistory } = this.props;
     return (
-        <div className={classes.searchContainer}>
-          <Paper className={classes.searchContainerPaper} elevation={1}>
-            <SearchMenu showSearchHistory={showSearchHistory}/>
-              <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
-              {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
-                <SearchIcon />
-              </IconButton>}
-          </Paper>
-          <div>
-            <Checkbox
-              checked={autoSearch}
-              onChange={this.handleAutoSearchToggle}
-              color="primary"
-              /> 
-            <span>Auto Search?</span>
-          </div>
+      <div className={classes.searchContainer}>
+        <Paper className={classes.searchContainerPaper} elevation={1}>
+          <SearchMenu toggleSearchHistory={toggleSearchHistory} showSearchHistory={showSearchHistory} />
+          <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
+          {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
+            <SearchIcon />
+          </IconButton>}
+        </Paper>
+        <div>
+          <Checkbox
+            checked={autoSearch}
+            onChange={this.handleAutoSearchToggle}
+            color="primary"
+          />
+          <span>Auto Search?</span>
         </div>
+      </div>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from '../style/style';
 
 
-class searchMenu extends React.Component {
+class searchMenu extends Component {
   state = {
     open: false,
   };
@@ -28,23 +28,23 @@ class searchMenu extends React.Component {
     this.setState({ open: false });
   };
 
-  showSearchHistory = () => {
-    const { showSearchHistory } = this.props;
-    this.setState({ open: false }, showSearchHistory());
+  toggleSearchHistory = () => {
+    const { toggleSearchHistory } = this.props;
+    this.setState({ open: false }, toggleSearchHistory());
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, showSearchHistory } = this.props;
     const { open } = this.state;
 
     return (
       <div className={classes.menuPaper}>
         <div>
           <IconButton buttonRef={node => {
-              this.anchorEl = node;
-            }} className={classes.iconButton} aria-label="Menu" onClick={this.handleToggle}>
-              <MenuIcon />
-            </IconButton>
+            this.anchorEl = node;
+          }} className={classes.iconButton} aria-label="Menu" onClick={this.handleToggle}>
+            <MenuIcon />
+          </IconButton>
           <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
             {({ TransitionProps, placement }) => (
               <Grow
@@ -55,7 +55,9 @@ class searchMenu extends React.Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
-                      <MenuItem onClick={this.showSearchHistory}>History</MenuItem>
+                      <MenuItem onClick={this.toggleSearchHistory}>
+                        {showSearchHistory ? 'Show Gallery' : 'Search History'}
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
