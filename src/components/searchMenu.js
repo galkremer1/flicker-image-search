@@ -34,7 +34,7 @@ class searchMenu extends Component {
   }
 
   render() {
-    const { classes, showSearchHistory } = this.props;
+    const { classes, showSearchHistory, clearSearchHistory} = this.props;
     const { open } = this.state;
 
     return (
@@ -58,6 +58,9 @@ class searchMenu extends Component {
                       <MenuItem onClick={this.toggleSearchHistory}>
                         {showSearchHistory ? 'Show Gallery' : 'Search History'}
                       </MenuItem>
+                      {showSearchHistory && <MenuItem onClick={clearSearchHistory}>
+                        Clear History
+                      </MenuItem>}
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

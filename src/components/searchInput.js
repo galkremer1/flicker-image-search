@@ -15,7 +15,7 @@ class SearchInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: ''
+      searchValue: this.props.searchTerm
     }
   }
   handleSearch = debounce(query => {
@@ -46,12 +46,12 @@ class SearchInput extends Component {
   }
 
   render() {
-    const { classes, inputPlaceHolder, autoSearch, toggleSearchHistory, showSearchHistory } = this.props;
+    const { classes, inputPlaceHolder, autoSearch, toggleSearchHistory, showSearchHistory, clearSearchHistory } = this.props;
     return (
       <div className={classes.searchContainer}>
         <Paper className={classes.searchContainerPaper} elevation={1}>
-          <SearchMenu toggleSearchHistory={toggleSearchHistory} showSearchHistory={showSearchHistory} />
-          <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input} placeholder={inputPlaceHolder} />
+          <SearchMenu toggleSearchHistory={toggleSearchHistory} showSearchHistory={showSearchHistory} clearSearchHistory={clearSearchHistory} />
+          <InputBase onChange={this.handleInputChange} onKeyDown={this.handleManualSearch} className={classes.input}  placeholder={inputPlaceHolder} id={'searchInput'} />
           {!autoSearch && <IconButton className={classes.iconButton} aria-label="Search" onClick={this.handleManualSearch}>
             <SearchIcon />
           </IconButton>}

@@ -55,7 +55,7 @@ class Gallery extends Component {
         })}
         {noResults && <div>
           No results
-      </div>}
+        </div>}
         <LightboxGallery images={photos} isGalleryOpen={isGalleryOpen} galleryPhotoIndex={galleryPhotoIndex} closeGallery={this.closeGallery} />
       </div>
     );

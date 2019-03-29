@@ -63,9 +63,16 @@ class App extends Component {
     })
   }
 
+  clearSearchHistory = () => {
+    localStorage.imageSearchHistory = JSON.parse('[]');
+    this.setState({
+      searchHistory: []
+    })
+  }
+
   updateSearchHistory = (searchTerm) => {
     const { searchHistory } = this.state;
-    if (!searchHistory.includes(searchTerm)) {
+    if (!searchHistory.includes(searchTerm.trim())) {
       searchHistory.push(searchTerm);
       localStorage.imageSearchHistory = JSON.stringify(searchHistory);
       this.setState({
@@ -106,19 +113,25 @@ class App extends Component {
     })
   }
 
+  handleSearchFromHistory = (searchTerm) => {
+    this.handleSearch(searchTerm);
+    const inputEl = document.getElementById('searchInput');
+    inputEl.value = searchTerm;
+  }
+
   render() {
     const { classes, appHeader } = this.props;
-    const { searchInputPlaceHolder, photos, loading, error, autoSearch, showSearchHistory } = this.state;
+    const { searchInputPlaceHolder, photos, loading, error, autoSearch, showSearchHistory, searchHistory, searchTerm} = this.state;
     return (
       <div className={classes.appContainer} >
         <header className={classes.appHeader}>
           {appHeader}
-          <SearchInput handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder}
-            toggleSearchHistory={this.toggleSearchHistory} showSearchHistory={showSearchHistory}
+          <SearchInput searchTerm={searchTerm} handleSearch={this.handleSearch} inputPlaceHolder={searchInputPlaceHolder}
+            toggleSearchHistory={this.toggleSearchHistory} showSearchHistory={showSearchHistory} clearSearchHistory={this.clearSearchHistory}
             autoSearch={autoSearch} handleAutoSearchToggle={this.handleAutoSearchToggle} />
         </header>
         {!showSearchHistory && <Gallery photos={photos} isLoading={loading} error={error} loadMore={this.loadMore} />}
-        {showSearchHistory && <SearchHistory />}
+        {showSearchHistory && <SearchHistory searchHistory={searchHistory} handleSearch={this.handleSearchFromHistory}/>}
         {loading &&
           (<div className="loading">Loading&#8230;</div>)
         }
