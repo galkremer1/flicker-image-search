@@ -10,8 +10,8 @@ class SearchHistory extends Component {
         return (
             <div className={classes.searchHistoryContainer}>
                 {searchHistory.map((item, i)=>{
-                    return <span key={'search-history-item-'+i} className={classes.searchHistoryItem} onClick={()=>{handleSearch(item)}}>
-                    {item}{i<searchHistory.length-1 ? ',':''}</span>
+                    return <span key={'search-history-item-'+i}><span className={classes.searchHistoryItem} onClick={()=>{handleSearch(item)}}>
+                    {item}</span>{i<searchHistory.length-1 ? ',':''}</span>
                 })}
                 {searchHistory.length === 0 && <div>
                     No Search History

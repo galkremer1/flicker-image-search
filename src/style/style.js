@@ -51,7 +51,10 @@ export const styles = {
     top: 100
   },
   searchHistoryItem: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&:hover':{
+      backgroundColor: 'lightgray'
+  }
   },
   error: {
     position: 'relative',
