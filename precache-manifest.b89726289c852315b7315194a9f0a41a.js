@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/flicker-image-search/static/js/runtime~main.75c3c9e2.js"
   },
   {
-    "revision": "9e4287d9abafc103bc65",
-    "url": "/flicker-image-search/static/js/main.7ba48cef.chunk.js"
+    "revision": "288d257a367c0134e2af",
+    "url": "/flicker-image-search/static/js/main.178f1c50.chunk.js"
   },
   {
     "revision": "a8e9eea453a8b1e83e9e",
     "url": "/flicker-image-search/static/js/2.89029376.chunk.js"
   },
   {
-    "revision": "9e4287d9abafc103bc65",
+    "revision": "288d257a367c0134e2af",
     "url": "/flicker-image-search/static/css/main.7e0276d4.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/flicker-image-search/static/css/2.385ad5d1.chunk.css"
   },
   {
-    "revision": "dc415b3b5a41b5037e481ebb29c8260f",
+    "revision": "837c8c6394421b08f792381541c6eee5",
     "url": "/flicker-image-search/index.html"
   }
 ];
